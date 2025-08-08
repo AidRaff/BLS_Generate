@@ -48,11 +48,15 @@ for i0 in range(np.shape(x)[0]):
         taun[i1,:,:] = np.transpose(tn) #put into matrices
     spectrum = np.zeros_like(wl) #space for spectrum at given radius
     for i1 in range(len(wl)):
-        S1 = complex(0,0)
-        S2 = complex(0,0) #initial values for summation
-        for i2 in range(omax[i0,i1]):
-            S1 += (an[i2,i1]*pin[:,:,i2]) + (bn[i2,i1]*taun[:,:,i2])
-            S2 += (an[i2,i1]*taun[:,:,i2]) + (bn[i2,i1]*pin[:,:,i2]) #calculate summation terms
+        if r[i0] <= 2.5:
+            S1 = np.dot(pin[:,:,:omax[i0,i1]],an[:omax[i0,i1],i1]) + np.dot(taun[:,:,:omax[i0,i1]],bn[:omax[i0,i1],i1])
+            S2 = np.dot(taun[:,:,:omax[i0,i1]],an[:omax[i0,i1],i1]) + np.dot(pin[:,:,:omax[i0,i1]],bn[:omax[i0,i1],i1])
+        else:
+            S1 = complex(0,0)
+            S2 = complex(0,0) #initial values for summation
+            for i2 in range(omax[i0,i1]):
+                S1 += (an[i2,i1]*pin[:,:,i2]) + (bn[i2,i1]*taun[:,:,i2])
+                S2 += (an[i2,i1]*taun[:,:,i2]) + (bn[i2,i1]*pin[:,:,i2]) #calculate summation terms
         S11 = (1/(2*(wn[i1]**2)))*((np.abs(S2)**2) + (np.abs(S1)**2)) #calculate S11 as function of theta and phi
         theta_int_terms = np.zeros_like(S11)
         for i2 in range(len(phi_s)):
