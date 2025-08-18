@@ -54,13 +54,20 @@ def RBhn2d(n,x):
     #compute value of derivative of Riccati-Bessel function of fourth kind with order n at x. 
     return (1/2)*(spherical_hn2(n,x) - x*(spherical_hn2(n+1,x) - spherical_hn2(n-1,x)))
 
+def RB_ratio(n,mx):
+    import numpy as np
+    r = 1/np.tan(mx)
+    for i0 in range(n):
+        r = 1/(((2*i0+1)/(mx)) - r)
+    return r
+
 def Mie_an(n, m, x):
-    #compute Mie a coefficient of order n for a particle of relative refractive index m and size parameter x.
-    return ((m*RBjn(n,m*x)*RBjnd(n,x))-(RBjn(n,x)*RBjnd(n,m*x)))/((m*RBjn(n,m*x)*RBhn1d(n,x))-(RBhn1(n,x)*RBjnd(n,m*x)))
+    r = RB_ratio(n,m*x)
+    return (((r/m) + ((n*(1-(1/m**2)))/x))*RBjn(n,x) - RBjn(n-1,x))/(((r/m) + ((n*(1-(1/m**2)))/x))*RBhn1(n,x) - RBhn1(n-1,x))
 
 def Mie_bn(n, m, x):
-    #compute Mie b coefficient of order n for a particle of relative refractive index m and size parameter x.
-    return ((RBjn(n,m*x)*RBjnd(n,x))-(m*RBjn(n,x)*RBjnd(n,m*x)))/((RBjn(n,m*x)*RBhn1d(n,x))-(m*RBhn1(n,x)*RBjnd(n,m*x)))
+    r = RB_ratio(n,m*x)
+    return (r*m*RBjn(n,x) - RBjn(n-1,x))/(r*m*RBhn1(n,x) - RBhn1(n-1,x))
 
 def Mie_pin(n, theta):
     #angular function pi of order 1-n evaluated at theta. Defined and calculated as per Bohren and Huffman P 94-95. n must be >= 1.
