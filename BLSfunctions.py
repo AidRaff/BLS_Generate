@@ -55,6 +55,7 @@ def RBhn2d(n,x):
     return (1/2)*(spherical_hn2(n,x) - x*(spherical_hn2(n+1,x) - spherical_hn2(n-1,x)))
 
 def RB_ratio(n,mx):
+    #calculate ratio of consecutive Riccati-Bessel functions (see https://doi.org/10.1364/AO.43.001951)
     import numpy as np
     r = 1/np.tan(mx)
     for i0 in range(n):
@@ -62,10 +63,12 @@ def RB_ratio(n,mx):
     return r
 
 def Mie_an(n, m, x):
+    # Mie a_n coefficient calculated according to Du (https://doi.org/10.1364/AO.43.001951) 
     r = RB_ratio(n,m*x)
     return (((r/m) + ((n*(1-(1/m**2)))/x))*RBjn(n,x) - RBjn(n-1,x))/(((r/m) + ((n*(1-(1/m**2)))/x))*RBhn1(n,x) - RBhn1(n-1,x))
 
 def Mie_bn(n, m, x):
+    # Mie b_n coefficient calculated according to Du (https://doi.org/10.1364/AO.43.001951) 
     r = RB_ratio(n,m*x)
     return (r*m*RBjn(n,x) - RBjn(n-1,x))/(r*m*RBhn1(n,x) - RBhn1(n-1,x))
 

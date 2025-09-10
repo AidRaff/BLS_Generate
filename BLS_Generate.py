@@ -30,8 +30,9 @@ for i0 in range(np.shape(x)[0]):
     an = np.zeros((len(o), len(wl)), dtype=complex)
     bn = np.zeros_like(an) #space for coefficients for given radius
     for i1 in range(omaxr[i0]):
-        an[i1,:] = pf[i1]*BLS.Mie_an(int(o[i1]), m, x[i0,:])
-        bn[i1,:] = pf[i1]*BLS.Mie_bn(int(o[i1]), m, x[i0,:]) #calculate given order of coefficients multiplied by prefactor
+        docalc = o[i1] <= omax[i0,:] #wavelengths for which i1th order need to be calculated
+        an[i1,docalc] = pf[i1]*BLS.Mie_an(int(o[i1]), m, x[i0,docalc])
+        bn[i1,docalc] = pf[i1]*BLS.Mie_bn(int(o[i1]), m, x[i0,docalc]) #calculate given order of coefficients multiplied by prefactor
     theta_s = np.linspace(0, np.arcsin(NA), int(npts[i0]))#range of scattered theta to look at (angle between scattered wavevector and detector axis)
     phi_s = np.linspace(0, 2*np.pi, int(npts[i0])) #range of scattered phi to use (angle between scattered wavevector and x-axis)
     theta_c = np.zeros((len(theta_s), len(phi_s)))
@@ -48,7 +49,7 @@ for i0 in range(np.shape(x)[0]):
         taun[i1,:,:] = np.transpose(tn) #put into matrices
     spectrum = np.zeros_like(wl) #space for spectrum at given radius
     for i1 in range(len(wl)):
-        if r[i0] <= 2.5:
+        if np.size(pin[:,:,:omax[i0,i1]]) < 65536:
             S1 = np.dot(pin[:,:,:omax[i0,i1]],an[:omax[i0,i1],i1]) + np.dot(taun[:,:,:omax[i0,i1]],bn[:omax[i0,i1],i1])
             S2 = np.dot(taun[:,:,:omax[i0,i1]],an[:omax[i0,i1],i1]) + np.dot(pin[:,:,:omax[i0,i1]],bn[:omax[i0,i1],i1])
         else:
