@@ -2,7 +2,7 @@ BLS_Generate README
 
 SUMMARY
 
-BLS_Generate is a Python code used to generate broadband light scattering (BLS) spectra for spherical homogeneous particles. Full details of the theoretical framework used for these calculations can be found in the associated manuscript [insert doi when available]. A brief summary is given below.
+BLS_Generate is a Python code used to generate broadband light scattering (BLS) spectra for spherical homogeneous particles. Full details of the theoretical framework used for these calculations can be found in the associated manuscript (https://doi.org/10.1016/j.jqsrt.2025.109708). A brief summary is given below.
 
 Users input 5 parameters:
 
@@ -23,7 +23,7 @@ In the main folder one will find the code in two formats: .py and .ipynb. The .p
 
 AUTHORS
 
-This code is written and maintained by Aidan Rafferty. He can be contacted at aidan.rafferty@chem.ox.ac.uk (until end of September 2025, will update then). 
+This code is written and maintained by Aidan Rafferty. He can be contacted at aidan.rafferty@chem.ox.ac.uk (until end of December 2025, will update then). 
 
 COPYRIGHT AND LICENSING
 
